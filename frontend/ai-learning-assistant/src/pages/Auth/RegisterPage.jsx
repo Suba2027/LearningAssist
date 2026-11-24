@@ -76,6 +76,8 @@ const RegisterPage = () => {
     <input
       type="text"
       value={username}
+      autoComplete="username"
+      name="username"
       onChange={(e) => setUsername(e.target.value)}
       onFocus={() => setFocusedField("username")}
       onBlur={() => setFocusedField(null)}
@@ -103,6 +105,8 @@ const RegisterPage = () => {
     <input
       type="email"
       value={email}
+      name="email"
+      autoComplete="email"
       onChange={(e) => setEmail(e.target.value)}
       onFocus={() => setFocusedField("email")}
       onBlur={() => setFocusedField(null)}
@@ -130,9 +134,11 @@ const RegisterPage = () => {
     <input
       type="password"
       value={password}
+      name="password"
       onChange={(e) => setPassword(e.target.value)}
       onFocus={() => setFocusedField("password")}
       onBlur={() => setFocusedField(null)}
+      autoComplete="new-password"
       className="w-full h-12 pl-12 pr-4 border-2 border-slate-200 rounded-xl bg-slate-50/50 text-slate-900 placeholder-slate-400 texxt-sm font-medium transition-all duration-200 focus:outline-none focus:border-emerald-500 focus:bg-white focus:shadow-lg focus:shadow-emerald-500/10"
       placeholder="........"
     />

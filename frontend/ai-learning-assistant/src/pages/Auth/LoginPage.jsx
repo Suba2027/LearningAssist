@@ -68,6 +68,8 @@ return (
     <input
       type="email"
       value={email}
+      autoComplete="username"
+      name="email"
       onChange={(e) => setEmail(e.target.value)}
       onFocus={() => setFocusedField('email')}
       onBlur={() => setFocusedField(null)}
@@ -91,6 +93,8 @@ return (
     <input
       type="password"
       value={password}
+      name="password"
+      autoComplete="new-password"
       onChange={(e) => setPassword(e.target.value)}
       onFocus={() => setFocusedField('password')}
       onBlur={() => setFocusedField(null)}

@@ -1,0 +1,320 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Playwright Practice Form</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f3f6fa;
+      margin: 0;
+      padding: 30px 16px;
+      color: #202938;
+    }
+
+    .container {
+      max-width: 720px;
+      margin: auto;
+    }
+
+    .card {
+      background: white;
+      padding: 24px;
+      margin-bottom: 20px;
+      border-radius: 12px;
+      box-shadow: 0 3px 12px #00000012;
+    }
+
+    h1, h2 {
+      color: #245b9e;
+    }
+
+    label {
+      display: block;
+      margin: 14px 0 6px;
+    }
+
+    input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+    textarea, select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #b8c3d1;
+      border-radius: 5px;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      outline: 2px solid #80b5ff;
+    }
+
+    input:disabled, button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 10px 0;
+    }
+
+    .option label {
+      display: inline;
+      margin: 0;
+    }
+
+    button {
+      padding: 10px 16px;
+      margin: 12px 8px 0 0;
+      border: 0;
+      border-radius: 5px;
+      cursor: pointer;
+      background: #245b9e;
+      color: white;
+    }
+
+    button:hover {
+      background: #163e70;
+    }
+
+    #hoverBox {
+      background: #e0edff;
+      padding: 20px;
+      border-radius: 8px;
+      transition: 0.2s;
+    }
+
+    #hoverBox:hover {
+      background: #a8d0ff;
+      transform: translateY(-3px);
+    }
+
+    #dragItem {
+      display: inline-block;
+      background: #ffe1a8;
+      padding: 14px;
+      margin: 12px 0;
+      cursor: grab;
+    }
+
+    #dropZone {
+      border: 2px dashed #8a98aa;
+      padding: 30px;
+      text-align: center;
+      border-radius: 8px;
+      min-height: 80px;
+    }
+
+    #bottomSection {
+      margin-top: 30px;
+      padding: 24px;
+      background: #e6f5e9;
+      border-radius: 8px;
+    }
+
+    #result {
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+  </style>
+</head>
+
+<body>
+<div class="container">
+
+  <h1>Playwright Practice Form</h1>
+  <p>Use this page to practise form, mouse and keyboard actions.</p>
+
+  <div class="card">
+    <h2>1. Form Elements</h2>
+
+    <form id="practiceForm">
+
+      <label for="fullName">Full Name *</label>
+      <input id="fullName" name="fullName"
+             placeholder="Enter your name" required>
+
+      <label for="email">Email *</label>
+      <input id="email" name="email" type="email"
+             placeholder="you@example.com" required autocomplete="email">
+
+      <label for="password">Password *</label>
+      <input id="password" name="password" type="password"
+             minlength="6" placeholder="Minimum 6 characters"
+             required autocomplete="new-password">
+
+      <label for="phone">Phone (10 digits)</label>
+      <input id="phone" name="phone" type="text"
+             pattern="[0-9]{10}" placeholder="9876543210"
+             title="Enter exactly 10 digits">
+
+      <label for="about">About You</label>
+      <textarea id="about" name="about"
+                rows="3" placeholder="Write something..."></textarea>
+
+      <label for="role">Select Role *</label>
+      <select id="role" name="role" required>
+        <option value="">Choose a role</option>
+        <option value="qa">Software Tester</option>
+        <option value="java">Java Developer</option>
+        <option value="frontend">Frontend Developer</option>
+      </select>
+
+      <p>Skills</p>
+      <div class="option">
+        <input type="checkbox" id="javaSkill" name="skills"
+               value="Java">
+        <label for="javaSkill">Java</label>
+      </div>
+      <div class="option">
+        <input type="checkbox" id="sqlSkill" name="skills"
+               value="SQL">
+        <label for="sqlSkill">SQL</label>
+      </div>
+      <div class="option">
+        <input type="checkbox" id="testingSkill" name="skills"
+               value="Testing">
+        <label for="testingSkill">Testing</label>
+      </div>
+
+      <p>Experience Level</p>
+      <div class="option">
+        <input type="radio" id="beginner" name="experience"
+               value="beginner" required>
+        <label for="beginner">Beginner</label>
+      </div>
+      <div class="option">
+        <input type="radio" id="intermediate" name="experience"
+               value="intermediate">
+        <label for="intermediate">Intermediate</label>
+      </div>
+
+      <label for="resume">Upload a File</label>
+      <input type="file" id="resume" name="resume">
+
+      <label for="lockedField">Disabled Field</label>
+      <input id="lockedField" value="Cannot edit this"
+             disabled>
+
+      <button type="submit" id="submitBtn">Submit Form</button>
+      <button type="reset" id="resetBtn">Reset Form</button>
+      <button type="button" id="enableBtn">Enable Submit Button</button>
+      <button type="button" id="disabledBtn" disabled>
+        Disabled Button
+      </button>
+
+    </form>
+
+    <p id="result" aria-live="polite"></p>
+  </div>
+
+  <div class="card">
+    <h2>2. Mouse Actions</h2>
+
+    <div id="hoverBox">Hover over this box.</div>
+
+    <p id="clickTarget">Click or double-click this text.</p>
+    <p id="mouseResult" aria-live="polite">Mouse action result appears here.</p>
+
+    <div id="dragItem" draggable="true">Drag me</div>
+    <div id="dropZone">Drop the item here</div>
+  </div>
+
+  <div class="card">
+    <h2>3. Keyboard Actions</h2>
+
+    <label for="keyboardInput">Keyboard Practice</label>
+    <input id="keyboardInput"
+           placeholder="Try Enter, Tab, Escape, Ctrl+A">
+
+    <p id="keyboardResult" aria-live="polite"></p>
+  </div>
+
+  <div id="bottomSection">
+    <h2>4. Scrolling Practice</h2>
+    <p>You have reached the bottom section.</p>
+    <button type="button" id="bottomBtn">Bottom Button</button>
+  </div>
+
+</div>
+
+<script>
+  const form = document.getElementById("practiceForm");
+  const result = document.getElementById("result");
+  const clickTarget = document.getElementById("clickTarget");
+  const mouseResult = document.getElementById("mouseResult");
+  const keyboardInput = document.getElementById("keyboardInput");
+  const keyboardResult = document.getElementById("keyboardResult");
+  const dragItem = document.getElementById("dragItem");
+  const dropZone = document.getElementById("dropZone");
+  const submitBtn = document.getElementById("submitBtn");
+
+  form.addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const data = new FormData(form);
+    const values = Object.fromEntries(data.entries());
+    values.skills = data.getAll("skills");
+
+    result.textContent =
+      "Form submitted successfully!\n" +
+      JSON.stringify(values, null, 2);
+  });
+
+  form.addEventListener("reset", function() {
+    result.textContent = "Form reset.";
+  });
+
+  document.getElementById("enableBtn").addEventListener("click", function() {
+    submitBtn.disabled = false;
+    mouseResult.textContent = "Submit button enabled.";
+  });
+
+  clickTarget.addEventListener("click", function() {
+    mouseResult.textContent = "Single click detected.";
+  });
+
+  clickTarget.addEventListener("dblclick", function() {
+    mouseResult.textContent = "Double-click detected.";
+  });
+
+  clickTarget.addEventListener("contextmenu", function(event) {
+    event.preventDefault();
+    mouseResult.textContent = "Right-click detected.";
+  });
+
+  keyboardInput.addEventListener("keydown", function(event) {
+    keyboardResult.textContent = "Key pressed: " + event.key;
+
+    if (event.key === "Escape") {
+      keyboardInput.blur();
+    }
+  });
+
+  keyboardInput.addEventListener("blur", function() {
+    keyboardResult.textContent = "Input lost focus (blur event).";
+  });
+
+  dragItem.addEventListener("dragstart", function(event) {
+    event.dataTransfer.setData("text/plain", "Drag me");
+  });
+
+  dropZone.addEventListener("dragover", function(event) {
+    event.preventDefault();
+  });
+
+  dropZone.addEventListener("drop", function(event) {
+    event.preventDefault();
+    dropZone.textContent = "Item dropped successfully!";
+  });
+</script>
+
+</body>
+</html>
